@@ -1,7 +1,7 @@
 process QCMETADATA {
     time '24h'
     cpus 2
-    memory '12 GB'
+    memory '24 GB'
     label 'process_high'
 
   input:

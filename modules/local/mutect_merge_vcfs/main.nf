@@ -1,6 +1,6 @@
 process MERGEVCFS {
     time '48h'
-    cpus 12
+    cpus 2
     memory '12 GB'
     label 'process_high'
 

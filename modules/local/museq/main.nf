@@ -1,7 +1,7 @@
 process MUSEQ {
     time '48h'
-    cpus 12
-    memory '12 GB'
+    cpus 16
+    memory '48 GB'
     label 'process_high'
 
   input:
@@ -38,7 +38,13 @@ process MUSEQ {
                 done
             parallel --jobs ${numcores} < museq_commands.txt
             if [ \$? -ne 0 ]; then exit 1; fi
-            variant_utils merge-vcf-files --inputs museq_vcf/*vcf --output merged.vcf
+
+            MUSEQ_VCF_FILES=\$(ls museq_vcf/*.vcf)
+            variant_utils merge-vcf-files \\
+                \$(for file in \$MUSEQ_VCF_FILES; do echo --inputs \$file; done) \\
+                --output merged.vcf
+
+
         fi
 
         variant_utils fix-museq-vcf --input merged.vcf --output merged.fixed.vcf

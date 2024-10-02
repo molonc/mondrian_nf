@@ -1,7 +1,7 @@
 process CSVERVEREMOVEDUPLICATES {
     time '24h'
-    cpus 2
-    memory '12 GB'
+    cpus 8
+    memory '30 GB'
     label 'process_high'
 
   input:

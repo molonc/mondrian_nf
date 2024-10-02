@@ -1,7 +1,7 @@
 process CONCATCSV {
     time '24h'
-    cpus 2
-    memory '12 GB'
+    cpus 1
+    memory '8 GB'
     label 'process_high'
 
   input:

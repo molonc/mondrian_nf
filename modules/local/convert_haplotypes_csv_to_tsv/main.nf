@@ -1,7 +1,7 @@
 process CONVERTHAPLOTYPESCSVTOTSV {
     time '48h'
-    cpus 12
-    memory '12 GB'
+    cpus 1
+    memory '1 GB'
     label 'process_high'
 
   input:

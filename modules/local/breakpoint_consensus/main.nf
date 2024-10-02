@@ -1,7 +1,7 @@
 process BREAKPOINTCONSENSUS {
     time '48h'
-    cpus 12
-    memory '12 GB'
+    cpus 1
+    memory '2 GB'
     label 'process_high'
 
     input:

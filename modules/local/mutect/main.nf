@@ -1,7 +1,7 @@
 process MUTECT {
     time '48h'
-    cpus 12
-    memory '12 GB'
+    cpus 4
+    memory '24 GB'
     label 'process_high'
 
   input:
@@ -28,7 +28,6 @@ process MUTECT {
     """
         set -e
 
-        gatk GetSampleName -R ${reference} -I ${tumor_bam} -O tumor_name.txt
         gatk GetSampleName -R ${reference} -I ${normal_bam} -O normal_name.txt
         mkdir raw_data
 
@@ -36,7 +35,7 @@ process MUTECT {
         then
             gatk Mutect2 \
             -I ${normal_bam} -normal `cat normal_name.txt` \
-            -I ${tumor_bam}  -tumor `cat tumor_name.txt` \
+            -I ${tumor_bam}  \
             -pon ${panel_of_normals} \
             --germline-resource  ${gnomad} \
             --f1r2-tar-gz raw_data/${interval}_f1r2.tar.gz \
@@ -45,23 +44,30 @@ process MUTECT {
             mv raw_data/${interval}.vcf.stats ${filename}.stats
         else
             intervals=`variant_utils split-interval --interval ${interval} --num_splits ${numcores}`
-            echo \${intervals}
-            for interval in \${intervals}
+            for interval in intervals
                 do
                     echo "gatk Mutect2 \
                     -I ${normal_bam} -normal `cat normal_name.txt` \
-                    -I ${tumor_bam}  -tumor `cat tumor_name.txt` \
+                    -I ${tumor_bam}  \
                     -pon  ${panel_of_normals} \
                     --germline-resource  ${gnomad} \
                     --f1r2-tar-gz raw_data/${interval}_f1r2.tar.gz \
                     -R ${reference} -O raw_data/${interval}.vcf.gz  --intervals ${interval} ">> commands.txt
                 done
             parallel --jobs ${numcores} < commands.txt
-            variant_utils merge-vcf-files --inputs raw_data/*vcf.gz --output merged.vcf
-            inputs=`ls raw_data/*stats | awk 'ORS=" -stats "' | head -c -8`
-            echo \${inputs}
-            gatk --java-options "-Xmx4G" MergeMutectStats \
-                -stats \${inputs} -O merged.stats
+            
+
+            VCF_GZ_FILES=\$(ls raw_data/*.vcf.gz)
+            variant_utils merge-vcf-files \\
+                \$(for file in \$VCF_GZ_FILES; do echo --inputs \$file; done) \\
+                --output merged.vcf
+
+
+            STATS_FILES=\$(ls raw_data/*.stats)
+            gatk --java-options "-Xmx4G" MergeMutectStats \\
+                \$(for file in \$STATS_FILES; do echo -stats \$file; done) \\
+                -O ${filename}.stats
+
         fi
 
         variant_utils fix-museq-vcf --input merged.vcf --output merged.fixed.vcf

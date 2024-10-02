@@ -1,7 +1,7 @@
 process GETPILEUP {
     time '48h'
-    cpus 12
-    memory '12 GB'
+    cpus 16
+    memory '64 GB'
     label 'process_high'
 
   input:
@@ -16,14 +16,13 @@ process GETPILEUP {
   output:
     path("${filename}.table"), emit: table
   script:
-    def chromosomes = chromosome.join(' ')
+    def chromosomes = chromosome.collect { "-L " + it }.join(' ')
     """
         mkdir outdir
         gatk GetPileupSummaries \
         -R ${reference} -I ${bam} \
-        --interval-set-rule INTERSECTION  -L ${chromosomes} \
+        ${chromosomes} \
         -V ${variants_for_contamination} \
-        -L ${variants_for_contamination} \
         -O ${filename}.table
     """
 }

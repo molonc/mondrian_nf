@@ -1,7 +1,7 @@
 process VARIANTMETADATA {
     time '48h'
-    cpus 12
-    memory '12 GB'
+    cpus 8
+    memory '24 GB'
     label 'process_high'
 
   input:

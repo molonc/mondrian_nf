@@ -43,7 +43,7 @@ species = params.species
 sample_id = params.sample_id
 numcores = params.numcores
 
-maxcoverage = params.maxcoverage ? maxcoverage : 10000
+maxcoverage = params.maxcoverage ? params.maxcoverage : 10000
 
 
 if(params.variants_for_contamination){

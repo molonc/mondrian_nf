@@ -1,7 +1,7 @@
 process MERGEPILEUPS {
     time '48h'
-    cpus 12
-    memory '12 GB'
+    cpus 2
+    memory '16 GB'
     label 'process_high'
 
   input:

@@ -1,7 +1,7 @@
 process DESTRUCT {
     time '48h'
-    cpus 12
-    memory '12 GB'
+    cpus 16
+    memory '100 GB'
     label 'process_high'
 
   input:
@@ -35,7 +35,7 @@ process DESTRUCT {
         ${filename}_breakpoint_read_table.csv \
         --bam_files ${tumor_bam} ${normal_bam} \
         --lib_ids tumour normal \
-        --tmpdir tempdir --pipelinedir pipelinedir --submit local --config config.py --loglevel DEBUG --maxjobs ${numcores}
+        --tmpdir tempdir --pipelinedir pipelinedir --submit local --config config.py --maxjobs ${numcores}
     """
 
 }

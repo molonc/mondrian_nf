@@ -1,7 +1,7 @@
 process STRELKA {
     time '48h'
-    cpus 12
-    memory '12 GB'
+    cpus 8
+    memory '24 GB'
     label 'process_high'
 
   input:
@@ -104,8 +104,20 @@ process STRELKA {
                     --strelka-max-depth-factor \${depth_filter_multiple}" >> commands.txt
                 done
             parallel --jobs ${numcores} < commands.txt
-            variant_utils merge-vcf-files --inputs *.snv.vcf --output merged_snv.vcf
-            variant_utils merge-vcf-files --inputs *.indels.vcf --output merged_indels.vcf
+
+
+            SNV_VCF_FILES=\$(ls *.snv.vcf)
+            variant_utils merge-vcf-files \\
+                \$(for file in \$SNV_VCF_FILES; do echo --inputs \$file; done) \\
+                --output merged_snv.vcf
+
+
+            INDELS_VCF_FILES=\$(ls *.indels.vcf)
+            variant_utils merge-vcf-files \\
+                \$(for file in \$INDELS_VCF_FILES; do echo --inputs \$file; done) \\
+                --output merged_indels.vcf
+
+
         fi
 
         variant_utils fix-museq-vcf --input merged_snv.vcf --output merged_snv.fixed.vcf

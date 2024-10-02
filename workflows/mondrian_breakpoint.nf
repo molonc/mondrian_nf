@@ -38,7 +38,7 @@ if(params.blacklist){
     blacklist = tuple(false, file("$baseDir/assets/dummy_file.txt"))
 }
 
-jvm_heap_gb = params.jvm_heap_gb ? jvm_heap_gb : 10
+jvm_heap_gb = params.jvm_heap_gb ? params.jvm_heap_gb : 30
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
