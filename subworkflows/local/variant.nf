@@ -115,8 +115,8 @@ workflow MONDRIAN_VARIANT {
             contamination_segments = contamination.segments
             has_contamination_data = true
         } else {
-            contamination_table = file("$baseDir/assets/dummy_file.txt")
-            contamination_segments = file("$baseDir/assets/dummy_file.txt")
+            contamination_table = file("$baseDir/docs/assets/dummy_file.txt")
+            contamination_segments = file("$baseDir/docs/assets/dummy_file.txt")
             has_contamination_data = false
         }
 
