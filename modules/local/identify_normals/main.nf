@@ -10,7 +10,7 @@ process IDENTIFYNORMALS {
     path(metrics)
     path(metrics_yaml)
     path(blacklist)
-    val(remove_blacklist)
+    val(blacklist_flag)
     val(relative_aneuploidy_threshold)
     val(ploidy_threshold)
     val(allowed_aneuploidy_score)
@@ -21,7 +21,7 @@ process IDENTIFYNORMALS {
     path("${filename}.csv.gz.yaml"), emit: yaml
 
   script:
-    def blacklist_arg = blacklist ? "--blacklist_file "+blacklist : ""
+    def blacklist_arg = blacklist_flag ? "--blacklist_file "+blacklist : ""
     """
         ls -l
         normalizer_utils identify-normal-cells \
