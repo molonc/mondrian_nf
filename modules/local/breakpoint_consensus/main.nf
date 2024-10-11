@@ -20,7 +20,7 @@ process BREAKPOINTCONSENSUS {
     path("${filename}.csv.gz.yaml"), emit: yaml
 
     script:
-    def blacklist_arg = blacklist_flag ? "--blacklist_file "+blacklist : ""
+    def blacklist_arg = blacklist_flag ? "--blacklist_bed "+blacklist : ""
     """
         mkdir tempdir
         breakpoint_utils breakpoint-consensus \
