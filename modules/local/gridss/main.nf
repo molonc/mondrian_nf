@@ -15,7 +15,6 @@ process GRIDSS {
     path(reference_pac)
     path(reference_sa)
     val(filename)
-    val(numcores)
     val(jvm_heap_gb)
   output:
     path("${filename}.vcf.gz"), emit: vcf
@@ -26,7 +25,7 @@ process GRIDSS {
         --assembly assembly/assembly.bam \
         --reference ${reference} \
         --output ${filename}.vcf.gz \
-        --threads ${numcores} \
+        --threads ${task.cpus} \
         --workingdir workingdir \
         --jvmheap ${jvm_heap_gb}g \
         --steps All \

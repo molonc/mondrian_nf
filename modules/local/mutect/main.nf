@@ -17,7 +17,6 @@ process MUTECT {
     path(gnomad)
     path(gnomad_idx)
     val(interval)
-    val(numcores)
     val(filename)
   output:
     path("${filename}.vcf.gz"), emit: vcf
@@ -31,7 +30,7 @@ process MUTECT {
         gatk GetSampleName -R ${reference} -I ${normal_bam} -O normal_name.txt
         mkdir raw_data
 
-        if [[ ${numcores} -eq 1 ]]
+        if [[ ${task.cpus} -eq 1 ]]
         then
             gatk Mutect2 \
             -I ${normal_bam} -normal `cat normal_name.txt` \
@@ -43,7 +42,7 @@ process MUTECT {
             mv raw_data/${interval}.vcf merged.vcf
             mv raw_data/${interval}.vcf.stats ${filename}.stats
         else
-            intervals=`variant_utils split-interval --interval ${interval} --num_splits ${numcores}`
+            intervals=`variant_utils split-interval --interval ${interval} --num_splits ${task.cpus}`
             for interval in intervals
                 do
                     echo "gatk Mutect2 \
@@ -54,7 +53,7 @@ process MUTECT {
                     --f1r2-tar-gz raw_data/${interval}_f1r2.tar.gz \
                     -R ${reference} -O raw_data/${interval}.vcf.gz  --intervals ${interval} ">> commands.txt
                 done
-            parallel --jobs ${numcores} < commands.txt
+            parallel --jobs ${task.cpus} < commands.txt
             
 
             VCF_GZ_FILES=\$(ls raw_data/*.vcf.gz)

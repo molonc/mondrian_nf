@@ -59,17 +59,16 @@ workflow MONDRIAN_VARIANT {
         cache_version
         species
         sample_id
-        numcores
         maxcoverage
 
     main:
         regions =  GETREGIONS(reference, chromosomes, 10000000)
         allregions = regions.map{it.readLines()}
 
-        normals = NORMALVARIANTBAM(normal, normal+'.bai', allregions.flatten(), numcores, maxcoverage)
-        normal_variant_bam=NORMALMERGEBAMS(normals.bam.collect(), 'merged_normal', numcores)
-        tumors = TUMORVARIANTBAM(tumor, tumor+'.bai', allregions.flatten(), numcores, maxcoverage)
-        tumor_variant_bam=TUMORMERGEBAMS(tumors.bam.collect(), 'merged_tumor', numcores)
+        normals = NORMALVARIANTBAM(normal, normal+'.bai', allregions.flatten(), maxcoverage)
+        normal_variant_bam=NORMALMERGEBAMS(normals.bam.collect(), 'merged_normal')
+        tumors = TUMORVARIANTBAM(tumor, tumor+'.bai', allregions.flatten(), maxcoverage)
+        tumor_variant_bam=TUMORMERGEBAMS(tumors.bam.collect(), 'merged_tumor')
 
 
         museq_vcfs = MUSEQ(
@@ -85,7 +84,7 @@ workflow MONDRIAN_VARIANT {
         genome_size = GETGENOMESIZE(reference, reference+'.fai', chromosomes)
         strelka = STRELKA(
             normal_variant_bam.bam, normal_variant_bam.bai, tumor_variant_bam.bam, tumor_variant_bam.bai,
-            reference, reference+'.fai', chrom_depth.txt, allregions.flatten(), genome_size.txt, numcores
+            reference, reference+'.fai', chrom_depth.txt, allregions.flatten(), genome_size.txt
         )
 
         concat_strelka_snv = CONCAT_STRELKA_SNV(strelka.snv_vcf.collect(), strelka.snv_csi.collect())
@@ -122,7 +121,7 @@ workflow MONDRIAN_VARIANT {
         mutect = MUTECT(
             normal_variant_bam.bam, normal_variant_bam.bai, tumor_variant_bam.bam, tumor_variant_bam.bai,
             reference, reference+'.fai', reference_dict, panel_of_normals, panel_of_normals+'.tbi',
-            gnomad, gnomad+'.tbi', allregions.flatten(), numcores, sample_id+'_mutect'
+            gnomad, gnomad+'.tbi', allregions.flatten(), sample_id+'_mutect'
         )
 
         orientation_model = READORIENTATIONMODEL(mutect.f1r2.collect())

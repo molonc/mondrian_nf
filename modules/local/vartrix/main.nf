@@ -12,7 +12,6 @@ process VARTRIX {
     path(reference_fasta)
     path(reference_fai)
     val(skip_header)
-    val(num_threads)
     val(filename)
   output:
     path("${filename}.csv.gz"), emit: csv
@@ -31,7 +30,7 @@ process VARTRIX {
         --mapq 20 \
         --no-duplicates \
         --primary-alignments \
-        --threads ${num_threads}
+        --threads ${task.cpus}
 
         snv_genotyping_utils parse-vartrix \
         --barcode out_snv_barcodes.txt \

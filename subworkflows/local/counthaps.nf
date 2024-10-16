@@ -19,12 +19,11 @@ workflow MONDRIAN_COUNTHAPS{
         metadata_input
         gap_table
         chromosomes
-        numcores
         sample_id
     main:
 
         splitbams = SPLITBAM(
-            tumor_bam, tumor_bam+'.bai', chromosomes, numcores
+            tumor_bam, tumor_bam+'.bai', chromosomes
         )
 
         segments = CREATESEGMENTS(

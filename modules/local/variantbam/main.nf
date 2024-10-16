@@ -9,7 +9,6 @@ process VARIANTBAM {
         path(bam)
         path(bai)
         val(interval)
-        val(numcores)
         val(max_coverage)
 
     output:
@@ -18,18 +17,18 @@ process VARIANTBAM {
 
     script:
     """
-        if [[ ${numcores} -eq 1 ]]
+        if [[ ${task.cpus} -eq 1 ]]
         then
             variant ${bam} -m ${max_coverage} -k ${interval} -v -b -o output.bam
         else
             mkdir variant_bam
-            split_intervals=`variant_utils split-interval --interval ${interval} --num_splits ${numcores}`
+            split_intervals=`variant_utils split-interval --interval ${interval} --num_splits ${task.cpus}`
             for splitinterval in \${split_intervals}
                 do
                     echo "variant ${bam} -m ${max_coverage} -k \${splitinterval} -v -b -o variant_bam/\${splitinterval}.bam" >> variant_commands.txt
                 done
-            parallel --jobs ${numcores} < variant_commands.txt
-            sambamba merge -t ${numcores} output.bam variant_bam/*bam
+            parallel --jobs ${task.cpus} < variant_commands.txt
+            sambamba merge -t ${task.cpus} output.bam variant_bam/*bam
         fi
         samtools index output.bam
     """

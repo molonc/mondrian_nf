@@ -31,7 +31,6 @@ workflow MONDRIAN_BREAKPOINT{
         repeats
         blacklist
         sample_id
-        numcores
         jvm_heap_gb
 
     main:
@@ -46,18 +45,18 @@ workflow MONDRIAN_BREAKPOINT{
 
         gridss = GRIDSS(
             normal, tumor, reference, reference+'.fai', reference+'.amb', reference+'.ann', reference+'.bwt',
-            reference+'.pac',reference+'.sa', sample_id+'_gridss', numcores, jvm_heap_gb
+            reference+'.pac',reference+'.sa', sample_id+'_gridss', jvm_heap_gb
         )
 
         svaba = SVABA(
             normal, normal+'.bai', tumor, tumor+'.bai', reference, reference+'.fai', reference+'.amb', reference+'.ann', reference+'.bwt',
-            reference+'.pac',reference+'.sa', sample_id+'_svaba', numcores
+            reference+'.pac',reference+'.sa', sample_id+'_svaba'
         )
 
         destruct = DESTRUCT(
             normal, normal+'.bai', tumor, tumor+'.bai', reference, reference+'.fai', reference+'.1.ebwt', reference+'.2.ebwt',
             reference+'.3.ebwt', reference+'.4.ebwt', reference+'.rev.1.ebwt', reference+'.rev.2.ebwt', reference_dgv,
-            reference_gtf, repeats, sample_id+'_destruct', numcores
+            reference_gtf, repeats, sample_id+'_destruct'
         )
         extract_somatic = EXTRACTSOMATIC(destruct.table, destruct.library, sample_id+'_extract_somatic')
         destruct_vcf = DESTRUCT_TO_VCF(extract_somatic.breakpoints, reference, sample_id, sample_id+'_destruct')

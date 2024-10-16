@@ -21,7 +21,6 @@ process DESTRUCT {
     path(reference_gtf)
     path(repeats_satellite_regions)
     val(filename)
-    val(numcores)
   output:
     path("${filename}_breakpoint_table.csv"), emit: table
     path("${filename}_breakpoint_library_table.csv"), emit: library
@@ -35,7 +34,7 @@ process DESTRUCT {
         ${filename}_breakpoint_read_table.csv \
         --bam_files ${tumor_bam} ${normal_bam} \
         --lib_ids tumour normal \
-        --tmpdir tempdir --pipelinedir pipelinedir --submit local --config config.py --maxjobs ${numcores}
+        --tmpdir tempdir --pipelinedir pipelinedir --submit local --config config.py --maxjobs ${task.cpus}
     """
 
 }

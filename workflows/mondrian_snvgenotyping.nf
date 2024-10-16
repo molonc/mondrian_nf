@@ -36,7 +36,6 @@ vcf_files = Channel.fromPath(params.vcf_files)
 bam_file = file(params.bam_file)
 reference_fasta = file(params.reference_fasta)
 metadata_input = file(params.metadata_input)
-numcores = params.numcores
 sample_id = params.sample_id
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,7 +60,6 @@ workflow MONDRIAN_SNVGENOTYPING_PIPELINE{
         reference_fasta,
         metadata_input,
         numlines,
-        numcores,
         sample_id
     )
 

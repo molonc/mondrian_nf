@@ -11,7 +11,6 @@ process PYSAMGENOTYPER {
     path(cell_barcodes)
     val(ignore_untagged_reads)
     val(skip_header)
-    val(num_threads)
     val(filename)
   output:
     path("${filename}.csv.gz"), emit: csv
@@ -23,7 +22,7 @@ process PYSAMGENOTYPER {
     def cell_barcodes_arg = cell_barcodes ? "--cell_barcodes "+cell_barcodes : ""
     """
 
-        if [[ ${num_threads} -eq 1 ]]
+        if [[ ${task.cpus} -eq 1 ]]
         then
             snv_genotyping_utils snv-genotyper --bam ${bam}  ${cell_barcodes_arg} \
             --targets_vcf ${vcf_file} --output ${filename}.csv.gz \
@@ -42,7 +41,7 @@ process PYSAMGENOTYPER {
                     --bam ${bam}  ${cell_barcodes_arg} ${ignore_untagged_reads_arg} ${skip_header_arg} ${sparse_arg}\
                      --targets_vcf \${split_vcf_file}  --output \${split_vcf_file}.genotype.csv.gz" >> commands.txt
                 done
-            parallel --jobs ${num_threads} < commands.txt
+            parallel --jobs ${task.cpus} < commands.txt
 
             inputs=`echo tempdir/vcf_split/*.genotype.csv.gz | sed "s/ / --in_f /g"`
             csverve concat --in_f \$inputs  --out_f ${filename}.csv.gz

@@ -8,7 +8,6 @@ process SPLITBAM {
     path(bamfile)
     path(baifile)
     val(chromosomes)
-    val(num_threads)
   output:
     path("outdir/*bam"), emit: bams
   script:
@@ -18,6 +17,6 @@ process SPLITBAM {
           --infile ${bamfile} \
           --outdir outdir --tempdir tempdir \
           ${chromosomes} \
-          --ncores ${num_threads}
+          --ncores ${task.cpus}
     """
 }

@@ -24,7 +24,6 @@ reference_fasta = file(params.reference_fasta)
 metadata_input = file(params.metadata_input)
 gap_table = file(params.gap_table)
 chromosomes = params.chromosomes
-numcores = params.numcores
 sample_id = params.sample_id
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,7 +48,6 @@ workflow MONDRIAN_COUNTHAPS_PIPELINE{
         metadata_input,
         gap_table,
         chromosomes,
-        numcores,
         sample_id
     )
 

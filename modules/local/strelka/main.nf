@@ -14,7 +14,6 @@ process STRELKA {
     path(chrom_depth)
     val(interval)
     path(genome_size)
-    val(numcores)
   output:
     path("merged_indels.sorted.fixed.vcf.gz"), emit: indel_vcf
     path("merged_indels.sorted.fixed.vcf.gz.csi"), emit: indel_csi
@@ -49,7 +48,7 @@ process STRELKA {
         indel_contam_tolerance=0.15
 
 
-        if [[ ${numcores} -eq 1 ]]
+        if [[ ${task.cpus} -eq 1 ]]
         then
             run_strelka ${normal_bam} ${tumor_bam} merged_indels.vcf merged_snv.vcf ${interval}.stats.txt ${interval} ${reference} \${genome_size} \
             -max-indel-size 50 -min-qscore \${min_qscore} -max-window-mismatch \${max_window_mismatch} \
@@ -75,7 +74,7 @@ process STRELKA {
             --strelka-chrom-depth-file ${chrom_depth} \
             --strelka-max-depth-factor \${depth_filter_multiple}
         else
-            intervals=`variant_utils split-interval --interval ${interval} --num_splits ${numcores}`
+            intervals=`variant_utils split-interval --interval ${interval} --num_splits ${task.cpus}`
             for interval in \$intervals
                 do
                     echo "run_strelka ${normal_bam} ${tumor_bam} \${interval}.indels.vcf \${interval}.snv.vcf \${interval}.stats.txt \${interval} \
@@ -103,7 +102,7 @@ process STRELKA {
                     --strelka-chrom-depth-file ${chrom_depth} \
                     --strelka-max-depth-factor \${depth_filter_multiple}" >> commands.txt
                 done
-            parallel --jobs ${numcores} < commands.txt
+            parallel --jobs ${task.cpus} < commands.txt
 
 
             SNV_VCF_FILES=\$(ls *.snv.vcf)

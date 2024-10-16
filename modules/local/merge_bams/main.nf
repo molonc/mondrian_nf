@@ -7,7 +7,6 @@ process MERGEBAMS {
   input:
     path(bams, stageAs: "?/*")
     val(filename)
-    val(numcores)
   output:
     path("${filename}.bam"), emit: bam
     path("${filename}.bam.bai"), emit: bai
@@ -23,7 +22,7 @@ process MERGEBAMS {
         $input_bam \
         --output ${filename}.bam \
         --tempdir temp \
-        --threads ${numcores}
+        --threads ${task.cpus}
         samtools index ${filename}.bam
     """
 }

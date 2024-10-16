@@ -13,7 +13,6 @@ process MUSEQ {
     path(reference_fai)
     val(max_coverage)
     val(interval)
-    val(numcores)
     val(filename)
   output:
     path("${filename}.vcf.gz"), emit:vcf
@@ -23,20 +22,20 @@ process MUSEQ {
     """
         mkdir pythonegg && export PYTHON_EGG_CACHE=$PWD/pythonegg
 
-        if [[ ${numcores} -eq 1 ]]
+        if [[ ${task.cpus} -eq 1 ]]
         then
             museq normal:${normal_bam} tumour:${tumor_bam} reference:${reference} \
             --out merged.vcf --log museq.log -v -i ${interval}
             if [ \$? -ne 0 ]; then exit 1; fi
         else
             mkdir museq_vcf museq_log
-            intervals=`variant_utils split-interval --interval ${interval} --num_splits ${numcores}`
+            intervals=`variant_utils split-interval --interval ${interval} --num_splits ${task.cpus}`
             for interval in \${intervals}
                 do
                     echo "museq normal:${normal_bam} tumour:${tumor_bam} reference:${reference} \
                     --out museq_vcf/\${interval}.vcf --log museq_log/\${interval}.log -v -i \${interval} ">> museq_commands.txt
                 done
-            parallel --jobs ${numcores} < museq_commands.txt
+            parallel --jobs ${task.cpus} < museq_commands.txt
             if [ \$? -ne 0 ]; then exit 1; fi
 
             MUSEQ_VCF_FILES=\$(ls museq_vcf/*.vcf)

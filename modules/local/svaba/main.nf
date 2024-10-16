@@ -17,12 +17,11 @@ process SVABA {
     path(reference_pac)
     path(reference_sa)
     val(filename)
-    val(numcores)
   output:
     path("${filename}.vcf.gz"), emit: vcf
   script:
     """
-        svaba run -t ${tumor_bam} -n ${normal_bam} -G ${reference} -z -p ${numcores} -a svaba
+        svaba run -t ${tumor_bam} -n ${normal_bam} -G ${reference} -z -p ${task.cpus} -a svaba
         mv svaba.svaba.somatic.sv.vcf.gz ${filename}.vcf.gz
     """
 }

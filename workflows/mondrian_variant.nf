@@ -24,7 +24,6 @@ assert_required_param(params.ncbi_build, 'ncbi_build')
 assert_required_param(params.cache_version, 'cache_version')
 assert_required_param(params.species, 'species')
 assert_required_param(params.sample_id, 'sample_id')
-assert_required_param(params.numcores, 'numcores')
 
 
 normal = params.normal
@@ -41,7 +40,6 @@ ncbi_build = params.ncbi_build
 cache_version = params.cache_version
 species = params.species
 sample_id = params.sample_id
-numcores = params.numcores
 
 maxcoverage = params.maxcoverage ? params.maxcoverage : 10000
 
@@ -91,7 +89,6 @@ workflow MONDRIAN_VARIANT_PIPELINE{
         cache_version,
         species,
         sample_id,
-        numcores,
         maxcoverage
     )
 }

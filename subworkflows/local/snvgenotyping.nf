@@ -24,7 +24,6 @@ workflow MONDRIAN_SNVGENOTYPING{
         reference_fasta
         metadata_input
         numlines
-        numcores
         sample_id
     main:
         if ( cell_barcodes[0] ) {
@@ -46,12 +45,12 @@ workflow MONDRIAN_SNVGENOTYPING{
 
         genotyper = PYSAMGENOTYPER(
             bam_file, bam_file+'.bai', chrom_vcfs.vcf.flatten(), barcodes,
-            true, true, numcores, sample_id+'_pysam_genotyper'
+            true, true, sample_id+'_pysam_genotyper'
         )
 
         vartrix = VARTRIX(
             bam_file, bam_file+'.bai', chrom_vcfs.vcf.flatten(), barcodes,
-            reference_fasta, reference_fasta+'.fai', true,numcores,
+            reference_fasta, reference_fasta+'.fai', true,
             sample_id+'_vartrix'
         )
         vartrix_all_chroms = CONCATCSV(vartrix.csv.collect(), vartrix.yaml.collect(), sample_id+'_vartrix', false)
