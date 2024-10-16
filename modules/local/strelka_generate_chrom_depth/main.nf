@@ -1,7 +1,7 @@
 process GENERATECHROMDEPTH {
     time '48h'
     cpus 1
-    memory '8 GB'
+    memory '6 GB'
     label 'process_high'
 
   input:

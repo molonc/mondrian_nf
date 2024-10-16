@@ -1,7 +1,7 @@
 process SVABA {
     time '48h'
-    cpus 8
-    memory '30 GB'
+    cpus 16
+    memory '100 GB'
     label 'process_high'
 
   input:

@@ -1,7 +1,7 @@
 process VARIANTCONSENSUS {
     time '48h'
-    cpus 8
-    memory '24 GB'
+    cpus 2
+    memory '12 GB'
     label 'process_high'
 
   input:

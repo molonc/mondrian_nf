@@ -1,7 +1,7 @@
 process BCFTOOLSMPILEUP {
     time '48h'
     cpus 1
-    memory '1 GB'
+    memory '6 GB'
     label 'process_high'
 
     input:

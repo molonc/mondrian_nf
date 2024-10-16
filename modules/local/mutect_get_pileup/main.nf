@@ -1,7 +1,7 @@
 process GETPILEUP {
     time '48h'
-    cpus 16
-    memory '64 GB'
+    cpus 4
+    memory '24 GB'
     label 'process_high'
 
   input:

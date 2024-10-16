@@ -1,7 +1,7 @@
 process GETSPLIT {
     time '48h'
-    cpus 16
-    memory '32 GB'
+    cpus 2
+    memory '12 GB'
     label 'process_high'
 
   input:

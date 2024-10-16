@@ -1,7 +1,7 @@
 process MUTECT {
     time '48h'
-    cpus 4
-    memory '24 GB'
+    cpus 16
+    memory '100 GB'
     label 'process_high'
 
   input:

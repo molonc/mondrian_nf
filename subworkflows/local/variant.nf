@@ -37,8 +37,6 @@ include { VARIANTCONSENSUS } from '../../modules/local/variant_consensus'
 include { VCF2MAF } from '../../modules/local/vcf2maf'
 include { UPDATEMAFCOUNTS } from '../../modules/local/update_maf_counts'
 
-include { REHEADERID as REHEADER_CONSENSUS } from '../../modules/local/vcf_reheader_id'
-
 include { VARIANTMETADATA } from '../../modules/local/variant_metadata'
 
 

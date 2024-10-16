@@ -1,7 +1,7 @@
 process VCF2MAF {
     time '48h'
-    cpus 2
-    memory '16 GB'
+    cpus 4
+    memory '24 GB'
     label 'process_high'
 
   input:

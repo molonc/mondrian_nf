@@ -1,6 +1,6 @@
 process CELLCYCLECLASSIFIER {
     time '48h'
-    cpus 1
+    cpus 4
     memory '24 GB'
     label 'process_high'
 

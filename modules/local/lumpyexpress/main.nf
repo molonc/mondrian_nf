@@ -1,7 +1,7 @@
 process LUMPYEXPRESS {
     time '48h'
-    cpus 16
-    memory '30 GB'
+    cpus 4
+    memory '24 GB'
     label 'process_high'
 
   input:

@@ -1,7 +1,7 @@
 process EXTRACTSOMATIC {
     time '48h'
-    cpus 16
-    memory '30 GB'
+    cpus 1
+    memory '6 GB'
     label 'process_high'
 
     input:

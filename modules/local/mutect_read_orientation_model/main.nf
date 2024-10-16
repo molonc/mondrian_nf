@@ -1,6 +1,6 @@
 process READORIENTATIONMODEL {
     time '48h'
-    cpus 2
+    cpus 4
     memory '24 GB'
     label 'process_high'
 
