@@ -6,12 +6,13 @@ include { GENERATEBARCODES } from '../../modules/local/generate_barcodes'
 include { REMOVEDUPLICATES } from '../../modules/local/vcf_remove_duplicates'
 include { REMOVEBLACKLISTEDCALLS } from '../../modules/local/vcf_remove_blacklisted_calls'
 include { SPLITVCFBYNUMLINES } from '../../modules/local/vcf_split_by_lines'
+include { PYSAMGENOTYPER } from '../../modules/local/pysam_genotyper'
 include { VARTRIX } from '../../modules/local/vartrix'
 include { RECOPY } from '../../modules/local/recopy'
 include { CONCATCSV } from '../../modules/local/csverve_concat_csv'
 include { REGENERATEVARTRIXOUTPUTS } from '../../modules/local/regenerate_vartrix_outputs'
 include { SNVGENOTYPINGMETADATA } from '../../modules/local/snv_genotyping_metadata'
-include { PYSAMGENOTYPER } from '../../modules/local/pysam_genotyper'
+
 
 
 workflow MONDRIAN_SNVGENOTYPING{

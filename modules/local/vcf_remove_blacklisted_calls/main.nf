@@ -1,7 +1,7 @@
 process REMOVEBLACKLISTEDCALLS {
     time '48h'
-    cpus 8
-    memory '48 GB'
+    cpus 1
+    memory '6 GB'
     label 'process_high'
 
   input:
