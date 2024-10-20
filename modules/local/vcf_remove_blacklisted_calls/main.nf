@@ -6,7 +6,7 @@ process REMOVEBLACKLISTEDCALLS {
 
   input:
     path(vcf_file)
-    val(blacklist)
+    path(blacklist)
     val(filename)
   output:
     path("${filename}.vcf.gz"), emit: vcf
