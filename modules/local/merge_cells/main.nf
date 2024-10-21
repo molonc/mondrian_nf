@@ -16,10 +16,13 @@ process BAMMERGECELLS{
   output:
     path("${filename_prefix}_reference_cells.bam"), emit: bam
     path("${filename_prefix}_reference_cells.bam.bai"), emit: bai
+    path("${filename_prefix}_reference_cells.bam.tdf"), emit: tdf
     path("${filename_prefix}_contaminated_cells.bam"), emit: contaminated_bam
     path("${filename_prefix}_contaminated_cells.bam.bai"), emit: contaminated_bai
+    path("${filename_prefix}_contaminated_cells.bam.tdf"), emit: contaminated_tdf
     path("${filename_prefix}_control_cells.bam"), emit: control_bam
     path("${filename_prefix}_control_cells.bam.bai"), emit: control_bai
+    path("${filename_prefix}_control_cells.bam.tdf"), emit: control_tdf
   script:
     def infiles = "--infiles " + bamfile.join(" --infiles ")
     def cell_ids = "--cell_ids " + cell_id.join(" --cell_ids ")
