@@ -3,9 +3,9 @@ nextflow.enable.dsl=2
 include { CONCATCSV as CONCATREADS } from '../../modules/local/csverve_concat_csv'
 include { CONCATCSV as CONCATSEGMENTS } from '../../modules/local/csverve_concat_csv'
 include { CONCATCSV as CONCATPARAMS } from '../../modules/local/csverve_concat_csv'
-include { CONCATCSV as CONCATHMMMETRICS } from '../../modules/local/csverve_concat_csv'
+include { CONCATCSV as CONCATMETRICS } from '../../modules/local/csverve_concat_csv'
 include { CONCATCSV as CONCATGCMETRICS } from '../../modules/local/csverve_concat_csv'
-include { CONCATCSV as CONCATREADSMETRICS } from '../../modules/local/csverve_concat_csv'
+include { CONCATCSV as CONCATALIGNMETRICS } from '../../modules/local/csverve_concat_csv'
 include { BUILDTAR as HMMTAR } from '../../modules/local/tar'
 include { BUILDTAR as ALIGNTAR } from '../../modules/local/tar'
 include { ALIGN } from '../../modules/local/align'
@@ -17,7 +17,6 @@ include { HTMLREPORT } from '../../modules/local/html_report'
 include { BAMMERGECELLS } from '../../modules/local/merge_cells'
 include { QCMETADATA } from '../../modules/local/qc_metadata'
 include { RECOPY as RECOPYMETADATA } from '../../modules/local/recopy'
-
 
 workflow MONDRIAN_QC{
 
@@ -69,12 +68,10 @@ workflow MONDRIAN_QC{
 
     ALIGN(fastqs)
 
-    CONCATREADSMETRICS(ALIGN.out.collect{it[3]}, ALIGN.out.collect{it[4]}, sample_id+'_alignment_metrics', false)
+    CONCATALIGNMETRICS(ALIGN.out.collect{it[3]}, ALIGN.out.collect{it[4]}, sample_id+'_alignment_metrics', false)
     CONCATGCMETRICS(ALIGN.out.collect{it[5]}, ALIGN.out.collect{it[6]}, sample_id+'_gc_metrics', true)
 
     ALIGNTAR(ALIGN.out.collect{it[7]}, sample_id+'_alignment_data')
-
-
 
     hmm_input = ALIGN.out.map {
         it -> tuple(
@@ -91,35 +88,35 @@ workflow MONDRIAN_QC{
     HMMTAR(HMMCOPY.out.collect{it[9]}, sample_id+'_hmmcopy_data')
 
     CONCATREADS(HMMCOPY.out.collect{it[1]}, HMMCOPY.out.collect{it[2]}, sample_id+'_hmmcopy_reads', false)
-    CONCATHMMMETRICS(HMMCOPY.out.collect{it[3]}, HMMCOPY.out.collect{it[4]}, sample_id+'_hmmcopy_metrics', false)
+    CONCATMETRICS(HMMCOPY.out.collect{it[3]}, HMMCOPY.out.collect{it[4]}, sample_id+'_metrics', false)
     CONCATPARAMS(HMMCOPY.out.collect{it[5]}, HMMCOPY.out.collect{it[6]}, sample_id+'_hmmcopy_params', false)
     CONCATSEGMENTS(HMMCOPY.out.collect{it[7]}, HMMCOPY.out.collect{it[8]}, sample_id+'_hmmcopy_segments', false)
 
     BAMMERGECELLS(
       ALIGN.out.collect{it[0]}, ALIGN.out.collect{it[1]}, ALIGN.out.collect{it[2]},
       primary_reference, primary_reference + '.fai',
-      CONCATHMMMETRICS.out.csv, CONCATHMMMETRICS.out.yaml,
+      CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
       sample_id
     )
     CELLCYCLECLASSIFIER(
-        CONCATHMMMETRICS.out.csv, CONCATHMMMETRICS.out.yaml,
+        CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
         CONCATREADS.out.csv, CONCATREADS.out.yaml,
     )
 
     ADDCLUSTERINGORDER(
         CELLCYCLECLASSIFIER.out.csv, CELLCYCLECLASSIFIER.out.yaml,
         CONCATREADS.out.csv, CONCATREADS.out.yaml,
-        chromosomes, sample_id + '_metrics'
+        chromosomes, sample_id + '_hmmcopy_metrics'
     )
 
     PLOTHEATMAP(
-        CONCATHMMMETRICS.out.csv, CONCATHMMMETRICS.out.yaml,
+        CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
         CONCATREADS.out.csv, CONCATREADS.out.yaml,
         chromosomes, sample_id + '_heatmap'
     )
 
     HTMLREPORT(
-        CONCATHMMMETRICS.out.csv, CONCATHMMMETRICS.out.yaml,
+        CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
         CONCATGCMETRICS.out.csv, CONCATGCMETRICS.out.yaml,
         sample_id + '_qcreport'
     )
