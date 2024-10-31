@@ -18,7 +18,7 @@ process PLOTHEATMAP {
     """
         hmmcopy_utils heatmap --reads ${reads} --metrics ${metrics} \
         --output ${filename}.pdf $chromosomes \
-        --sidebar_column pick_met
+        --sidebar_column cell_call
     """
 
 }
