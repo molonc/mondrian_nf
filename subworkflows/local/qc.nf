@@ -113,7 +113,6 @@ workflow MONDRIAN_QC{
         )
     }
 
-    /*
 
     HMMCOPY(hmm_input)
 
@@ -168,7 +167,5 @@ workflow MONDRIAN_QC{
     )
 
     RECOPYMETADATA(QCMETADATA.out.metadata, 'metadata.yaml')
-
-    */
 
 }
