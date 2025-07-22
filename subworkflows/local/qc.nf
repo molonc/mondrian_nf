@@ -8,7 +8,9 @@ include { CONCATCSV as CONCATGCMETRICS } from '../../modules/local/csverve_conca
 include { CONCATCSV as CONCATALIGNMETRICS } from '../../modules/local/csverve_concat_csv'
 include { BUILDTAR as HMMTAR } from '../../modules/local/tar'
 include { BUILDTAR as ALIGNTAR } from '../../modules/local/tar'
-include { ALIGN } from '../../modules/local/align'
+include { ALIGNFASTQSCREEN } from '../../modules/local/align_fastqscreen'
+include { ALIGNCLEANALIGNSORT } from '../../modules/local/align_cleanalignsort'
+include { ALIGNMETRICS } from '../../modules/local/align_metrics'
 include { CELLCYCLECLASSIFIER } from '../../modules/local/cell_cycle_classifier'
 include { ADDCLUSTERINGORDER } from '../../modules/local/clustering_order'
 include { PLOTHEATMAP } from '../../modules/local/heatmap'
@@ -90,14 +92,18 @@ workflow MONDRIAN_QC{
         )
     }
 
-    ALIGN(fastqs)
+    alignfastqscreen_done = ALIGNFASTQSCREEN(fastqs)
+    aligncleanalignsort_done = ALIGNCLEANALIGNSORT(alignfastqscreen_done)
+    ALIGNMETRICS(aligncleanalignsort_done)
 
-    CONCATALIGNMETRICS(ALIGN.out.collect{it[3]}, ALIGN.out.collect{it[4]}, sample_id+'_alignment_metrics', false)
-    CONCATGCMETRICS(ALIGN.out.collect{it[5]}, ALIGN.out.collect{it[6]}, sample_id+'_gc_metrics', true)
 
-    ALIGNTAR(ALIGN.out.collect{it[7]}, sample_id+'_alignment_data')
 
-    hmm_input = ALIGN.out.map {
+    CONCATALIGNMETRICS(ALIGNMETRICS.out.collect{it[3]}, ALIGNMETRICS.out.collect{it[4]}, sample_id+'_alignment_metrics', false)
+    CONCATGCMETRICS(ALIGNMETRICS.out.collect{it[5]}, ALIGNMETRICS.out.collect{it[6]}, sample_id+'_gc_metrics', true)
+
+    ALIGNTAR(ALIGNMETRICS.out.collect{it[7]}, sample_id+'_alignment_data')
+
+    hmm_input = ALIGNMETRICS.out.map {
         it -> tuple(
             it[0],it[1],it[2], gc_wig, map_wig,
             primary_reference, primary_reference+'.fai',
@@ -106,6 +112,8 @@ workflow MONDRIAN_QC{
             chromosomes, "0.9"
         )
     }
+
+    /*
 
     HMMCOPY(hmm_input)
 
@@ -117,7 +125,7 @@ workflow MONDRIAN_QC{
     CONCATSEGMENTS(HMMCOPY.out.collect{it[7]}, HMMCOPY.out.collect{it[8]}, sample_id+'_hmmcopy_segments', false)
 
     BAMMERGECELLS(
-      ALIGN.out.collect{it[0]}, ALIGN.out.collect{it[1]}, ALIGN.out.collect{it[2]},
+      ALIGNMETRICS.out.collect{it[0]}, ALIGNMETRICS.out.collect{it[1]}, ALIGNMETRICS.out.collect{it[2]},
       primary_reference, primary_reference + '.fai',
       CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
       sample_id
@@ -160,5 +168,7 @@ workflow MONDRIAN_QC{
     )
 
     RECOPYMETADATA(QCMETADATA.out.metadata, 'metadata.yaml')
+
+    */
 
 }
