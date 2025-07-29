@@ -10,7 +10,6 @@ process ALIGNCLEANALIGNSORT {
       path(primary_reference), val(primary_reference_version), val(primary_reference_name),
       path(primary_reference_fai), path(primary_reference_amb),path(primary_reference_ann),
       path(primary_reference_bwt),path(primary_reference_pac),path(primary_reference_sa),
-      path(secondary_reference_4_fai), path(secondary_reference_4_amb),path(secondary_reference_4_ann),
       path(metadata),
       path("fastqscreen/${cell_id}")
     )
