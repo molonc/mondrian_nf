@@ -93,9 +93,51 @@ workflow MONDRIAN_QC{
     }
 
     alignfastqscreen_done = ALIGNFASTQSCREEN(fastqs)
-    aligncleanalignsort_done = ALIGNCLEANALIGNSORT(alignfastqscreen_done)
-    ALIGNMETRICS(aligncleanalignsort_done)
+    aligncleanalignsort_done = ALIGNCLEANALIGNSORT(
+      alignfastqscreen_done.map { it ->
+        def (cell_id, lanes, flowcells, metadata, fastqscreen_path) = it
+        tuple(
+          cell_id,
+          lanes,
+          flowcells,
+          primary_reference,
+          primary_reference_version,
+          primary_reference_name,
+          primary_reference+'.fai',
+          primary_reference+'.amb',
+          primary_reference+'.ann',
+          primary_reference+'.bwt',
+          primary_reference+'.pac',
+          primary_reference+'.sa',
+          metadata,
+          fastqscreen_path
+        )
+      }
+    )
 
+    ALIGNMETRICS(aligncleanalignsort_done.map { it ->
+        def (cell_id, lanes, flowcells, metadata, fastqscreen_path, cleanalignsort_path, alignedbam_path, alignedbai_path) = it
+        tuple(
+          cell_id,
+          lanes,
+          flowcells,
+          primary_reference,
+          primary_reference_version,
+          primary_reference_name,
+          primary_reference+'.fai',
+          primary_reference+'.amb',
+          primary_reference+'.ann',
+          primary_reference+'.bwt',
+          primary_reference+'.pac',
+          primary_reference+'.sa',
+          metadata,
+          fastqscreen_path,
+          cleanalignsort_path,
+          alignedbam_path,
+          alignedbai_path
+        )
+      }
+    )
 
 
     CONCATALIGNMETRICS(ALIGNMETRICS.out.collect{it[3]}, ALIGNMETRICS.out.collect{it[4]}, sample_id+'_alignment_metrics', false)
