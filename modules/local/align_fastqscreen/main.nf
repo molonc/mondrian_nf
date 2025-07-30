@@ -1,6 +1,6 @@
 process ALIGNFASTQSCREEN {
     time '24h'
-    cpus 8
+    cpus 20
     memory '8 GB'
     label 'process_high'
 
