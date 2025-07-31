@@ -1,6 +1,6 @@
 process ALIGNFASTQSCREEN {
     time '24h'
-    cpus 20
+    cpus 8
     memory '8 GB'
     label 'process_high'
 
@@ -93,7 +93,7 @@ process ALIGNFASTQSCREEN {
         --num_threads ${task.cpus}
 
         mkdir -p fastqscreen/${cell_id}
-        cp -r tempdir/${cell_id}/* fastqscreen/${cell_id}/
+        cp -r tempdir/fastqscreen/${cell_id}/* fastqscreen/${cell_id}/
 
         rm -rf tempdir
     """

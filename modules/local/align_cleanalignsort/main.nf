@@ -50,7 +50,7 @@ process ALIGNCLEANALIGNSORT {
 
 
         mkdir -p cleanalignsort/${cell_id}
-        cp -r tempdir/${cell_id}/* cleanalignsort/${cell_id}/
+        cp -r tempdir/cleanalignsort/${cell_id}/* cleanalignsort/${cell_id}/
 
         rm -rf tempdir
     """
