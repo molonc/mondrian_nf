@@ -1,7 +1,7 @@
 process ALIGNCLEANALIGNSORT {
     time '24h'
     cpus 8
-    memory '8 GB'
+    memory '16 GB'
     label 'process_high'
 
   input:
