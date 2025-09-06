@@ -1,6 +1,6 @@
 process ALIGNMETRICS {
     time '24h'
-    cpus 1
+    cpus 2
     memory '8 GB'
     label 'process_high'
 
