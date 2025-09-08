@@ -1,7 +1,7 @@
 process ALIGNMETRICS {
     time '24h'
-    cpus 1
-    memory '8 GB'
+    cpus 2
+    memory '12 GB'
     label 'process_high'
 
   input:
