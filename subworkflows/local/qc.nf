@@ -141,15 +141,6 @@ workflow MONDRIAN_QC{
 
 
     CONCATALIGNMETRICS(ALIGNMETRICS.out.collect{it[3]}, ALIGNMETRICS.out.collect{it[4]}, sample_id+'_alignment_metrics', false)
-
-    BAMMERGECELLS(
-      ALIGNMETRICS.out.collect{it[0]}, ALIGNMETRICS.out.collect{it[1]}, ALIGNMETRICS.out.collect{it[2]},
-      primary_reference, primary_reference + '.fai',
-      CONCATALIGNMETRICS.out.csv, CONCATALIGNMETRICS.out.yaml,
-      sample_id
-    )
-
-    
     CONCATGCMETRICS(ALIGNMETRICS.out.collect{it[5]}, ALIGNMETRICS.out.collect{it[6]}, sample_id+'_gc_metrics', true)
 
     ALIGNTAR(ALIGNMETRICS.out.collect{it[7]}, sample_id+'_alignment_data')
@@ -165,9 +156,6 @@ workflow MONDRIAN_QC{
     }
 
 
-
-
-
     HMMCOPY(hmm_input)
 
     HMMTAR(HMMCOPY.out.collect{it[9]}, sample_id+'_hmmcopy_data')
@@ -177,6 +165,12 @@ workflow MONDRIAN_QC{
     CONCATPARAMS(HMMCOPY.out.collect{it[5]}, HMMCOPY.out.collect{it[6]}, sample_id+'_hmmcopy_params', false)
     CONCATSEGMENTS(HMMCOPY.out.collect{it[7]}, HMMCOPY.out.collect{it[8]}, sample_id+'_hmmcopy_segments', false)
 
+    BAMMERGECELLS(
+      ALIGNMETRICS.out.collect{it[0]}, ALIGNMETRICS.out.collect{it[1]}, ALIGNMETRICS.out.collect{it[2]},
+      primary_reference, primary_reference + '.fai',
+      CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
+      sample_id
+    )
     CELLCYCLECLASSIFIER(
         CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
         CONCATREADS.out.csv, CONCATREADS.out.yaml,
