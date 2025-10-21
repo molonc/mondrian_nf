@@ -1,7 +1,7 @@
 process ALIGN {
     time '24h'
     cpus 1
-    memory '8 GB'
+    memory '16 GB'
     label 'process_high'
 
   input:
