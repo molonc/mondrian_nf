@@ -116,49 +116,50 @@ workflow MONDRIAN_QC{
     CONCATPARAMS(HMMCOPY.out.collect{it[5]}, HMMCOPY.out.collect{it[6]}, sample_id+'_hmmcopy_params', false)
     CONCATSEGMENTS(HMMCOPY.out.collect{it[7]}, HMMCOPY.out.collect{it[8]}, sample_id+'_hmmcopy_segments', false)
 
-    #BAMMERGECELLS(
-    #  ALIGN.out.collect{it[0]}, ALIGN.out.collect{it[1]}, ALIGN.out.collect{it[2]},
-    #  primary_reference, primary_reference + '.fai',
-    #  CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
-    #  sample_id
-    #)
-    #CELLCYCLECLASSIFIER(
-    #    CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
-    #    CONCATREADS.out.csv, CONCATREADS.out.yaml,
-    #)
+    /*
+    BAMMERGECELLS(
+      ALIGN.out.collect{it[0]}, ALIGN.out.collect{it[1]}, ALIGN.out.collect{it[2]},
+      primary_reference, primary_reference + '.fai',
+      CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
+      sample_id
+    )
+    CELLCYCLECLASSIFIER(
+        CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
+        CONCATREADS.out.csv, CONCATREADS.out.yaml,
+    )
 
-    #ADDCLUSTERINGORDER(
-    #    CELLCYCLECLASSIFIER.out.csv, CELLCYCLECLASSIFIER.out.yaml,
-    #    CONCATREADS.out.csv, CONCATREADS.out.yaml,
-    #    chromosomes, sample_id + '_hmmcopy_metrics'
-    #)
+    ADDCLUSTERINGORDER(
+        CELLCYCLECLASSIFIER.out.csv, CELLCYCLECLASSIFIER.out.yaml,
+        CONCATREADS.out.csv, CONCATREADS.out.yaml,
+        chromosomes, sample_id + '_hmmcopy_metrics'
+    )
 
-    #PLOTHEATMAP(
-    #    CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
-    #    CONCATREADS.out.csv, CONCATREADS.out.yaml,
-    #    chromosomes, sample_id + '_heatmap'
-    #)
+    PLOTHEATMAP(
+        CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
+        CONCATREADS.out.csv, CONCATREADS.out.yaml,
+        chromosomes, sample_id + '_heatmap'
+    )
 
-    #HTMLREPORT(
-    #    CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
-    #    CONCATGCMETRICS.out.csv, CONCATGCMETRICS.out.yaml,
-    #    sample_id + '_qcreport'
-    #)
+    HTMLREPORT(
+        CONCATMETRICS.out.csv, CONCATMETRICS.out.yaml,
+        CONCATGCMETRICS.out.csv, CONCATGCMETRICS.out.yaml,
+        sample_id + '_qcreport'
+    )
 
-    #QCMETADATA(
-    #    BAMMERGECELLS.out.bam, BAMMERGECELLS.out.bai,
-    #    BAMMERGECELLS.out.contaminated_bam, BAMMERGECELLS.out.contaminated_bai,
-    #    BAMMERGECELLS.out.control_bam, BAMMERGECELLS.out.control_bai,
-    #    CONCATGCMETRICS.out.csv, CONCATGCMETRICS.out.yaml,
-    #    ADDCLUSTERINGORDER.out.csv, ADDCLUSTERINGORDER.out.yaml,
-    #    CONCATPARAMS.out.csv, CONCATPARAMS.out.yaml,
-    #    CONCATSEGMENTS.out.csv, CONCATSEGMENTS.out.yaml,
-    #    CONCATREADS.out.csv, CONCATREADS.out.yaml,
-    #    PLOTHEATMAP.out.pdf, HTMLREPORT.out.html,
-    #    ALIGNTAR.out.tar, HMMTAR.out.tar,
-    #    metadata_yaml
-    #)
+    QCMETADATA(
+        BAMMERGECELLS.out.bam, BAMMERGECELLS.out.bai,
+        BAMMERGECELLS.out.contaminated_bam, BAMMERGECELLS.out.contaminated_bai,
+        BAMMERGECELLS.out.control_bam, BAMMERGECELLS.out.control_bai,
+        CONCATGCMETRICS.out.csv, CONCATGCMETRICS.out.yaml,
+        ADDCLUSTERINGORDER.out.csv, ADDCLUSTERINGORDER.out.yaml,
+        CONCATPARAMS.out.csv, CONCATPARAMS.out.yaml,
+        CONCATSEGMENTS.out.csv, CONCATSEGMENTS.out.yaml,
+        CONCATREADS.out.csv, CONCATREADS.out.yaml,
+        PLOTHEATMAP.out.pdf, HTMLREPORT.out.html,
+        ALIGNTAR.out.tar, HMMTAR.out.tar,
+        metadata_yaml
+    )
 
-    #RECOPYMETADATA(QCMETADATA.out.metadata, 'metadata.yaml')
-
+    RECOPYMETADATA(QCMETADATA.out.metadata, 'metadata.yaml')
+    */
 }
