@@ -68,6 +68,5 @@ process HMMCOPY {
           --metrics-yaml ${cell_id}_metrics.csv.gz.yaml \
           --org-threshold 0.60
 
-        # what is reference? a file?
     """
 }

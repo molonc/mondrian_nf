@@ -4,6 +4,7 @@ import os
 import sys
 from typing import List, Dict
 
+import numpy as np          # <-- added
 import pandas as pd
 import yaml
 
@@ -76,8 +77,6 @@ def ensure_yaml_columns(doc: dict, new_cols: List[Dict[str, str]]):
             doc["columns"].append({"dtype": c["dtype"], "name": c["name"]})
     # preserve header/sep defaults if missing
     doc.setdefault("header", True)
-    # the YAML you showed has sep: ',' (a string with single quotes in YAML),
-    # dumping as ',' is fine; readers treat it the same.
     doc.setdefault("sep", ",")
 
 
@@ -100,10 +99,10 @@ def compute_derived(df: pd.DataFrame, org_threshold: float,
     )
     df["fastqscreen_sum"] = df["fastqscreen_eukaryotes"] + df["fastqscreen_prokaryotes"]
 
-    # denominators with NA to avoid div-by-zero
-    denom_sum = df["fastqscreen_sum"].replace(0, pd.NA)
-    denom_euk = df["fastqscreen_eukaryotes"].replace(0, pd.NA)
-    denom_pro = df["fastqscreen_prokaryotes"].replace(0, pd.NA)
+    # denominators with NA to avoid div-by-zero (compat with pandas<1.0: use np.nan)
+    denom_sum = df["fastqscreen_sum"].replace(0, np.nan)
+    denom_euk = df["fastqscreen_eukaryotes"].replace(0, np.nan)
+    denom_pro = df["fastqscreen_prokaryotes"].replace(0, np.nan)
 
     # fractions
     df["contam_eukar_perc"] = df["fastqscreen_eukaryotes"] / denom_sum
@@ -169,6 +168,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # deps: pandas, pyyaml
-    # pip install pandas pyyaml
+    # deps: pandas, pyyaml, numpy
     main()
