@@ -114,7 +114,7 @@ workflow MONDRIAN_QC{
     
     CONCATMETRICS(HMMCOPY.out.collect{it[3]}, HMMCOPY.out.collect{it[4]}, sample_id+'_metrics', false)
 
-    /*
+
     CONCATREADS(HMMCOPY.out.collect{it[1]}, HMMCOPY.out.collect{it[2]}, sample_id+'_hmmcopy_reads', false)
     CONCATPARAMS(HMMCOPY.out.collect{it[5]}, HMMCOPY.out.collect{it[6]}, sample_id+'_hmmcopy_params', false)
     CONCATSEGMENTS(HMMCOPY.out.collect{it[7]}, HMMCOPY.out.collect{it[8]}, sample_id+'_hmmcopy_segments', false)
@@ -164,5 +164,5 @@ workflow MONDRIAN_QC{
     )
 
     RECOPYMETADATA(QCMETADATA.out.metadata, 'metadata.yaml')
-    */
+
 }
