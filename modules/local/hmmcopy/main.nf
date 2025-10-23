@@ -63,7 +63,7 @@ process HMMCOPY {
         rm training_data.h5
 
         # ---- add contamination status to metrics (in-place) ----
-        python scripts/add_contamination_status.py \
+        python "$projectDir/script/add_contamination_status.py" \
           --metrics-csv  ${cell_id}_metrics.csv.gz \
           --metrics-yaml ${cell_id}_metrics.csv.gz.yaml \
           --org-threshold 0.60
