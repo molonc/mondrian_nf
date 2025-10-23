@@ -61,5 +61,13 @@ process HMMCOPY {
         --map_cutoff ${map_cutoff} \
         --quality_classifier_training_data training_data.h5
         rm training_data.h5
+
+        # ---- add contamination status to metrics (in-place) ----
+        python scripts/add_contamination_status.py \
+          --metrics-csv  ${cell_id}_metrics.csv.gz \
+          --metrics-yaml ${cell_id}_metrics.csv.gz.yaml \
+          --org-threshold 0.60
+
+        # what is reference? a file?
     """
 }
