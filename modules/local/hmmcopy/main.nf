@@ -36,6 +36,7 @@ process HMMCOPY {
         path("bias.pdf")
     )
   script:
+    def add_contam = file("${projectDir}/script/add_contamination_status.py")
     def chromosomes = "--chromosomes " + chromosomes.join(" --chromosomes ")
     """
         grep fixed ${gc_wig}
@@ -63,7 +64,7 @@ process HMMCOPY {
         rm training_data.h5
 
         # ---- add contamination status to metrics (in-place) ----
-        python "$projectDir/script/add_contamination_status.py" \
+        python ${add_contam} \
           --metrics-csv  ${cell_id}_metrics.csv.gz \
           --metrics-yaml ${cell_id}_metrics.csv.gz.yaml \
           --org-threshold 0.60
