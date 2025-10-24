@@ -107,7 +107,9 @@ workflow MONDRIAN_QC{
         )
     }
 
-    HMMCOPY(hmm_input)
+    ch_add_contam = Channel.value( file("${projectDir}/script/add_contamination_status.py") )
+
+    HMMCOPY(hmm_input, ch_add_contam)
 
     HMMTAR(HMMCOPY.out.collect{it[9]}, sample_id+'_hmmcopy_data')
 
