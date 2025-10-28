@@ -1,7 +1,7 @@
 process SPLITBAM {
     time '48h'
-    cpus 16
-    memory '100 GB'
+    cpus 20
+    memory '150 GB'
     label 'process_high'
 
   input:
