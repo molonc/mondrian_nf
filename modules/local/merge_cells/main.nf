@@ -1,6 +1,6 @@
 process BAMMERGECELLS{
     time '48h'
-    cpus 20
+    cpus 32
     memory '150 GB'
     label 'process_high'
 
