@@ -1,7 +1,7 @@
 process ALIGN {
     time '24h'
     cpus 32
-    memory { 7.5.GB * task.attempt }
+    memory 220.GB
     label 'process_high'
 
   input:
