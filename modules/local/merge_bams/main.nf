@@ -1,7 +1,7 @@
 process MERGEBAMS {
     time '48h'
-    cpus 16
-    memory '100 GB'
+    cpus 32
+    memory '240 GB'
     label 'process_high'
 
   input:
