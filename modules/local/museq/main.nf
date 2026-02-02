@@ -20,7 +20,7 @@ process MUSEQ {
     path("${filename}.vcf.gz.tbi"), emit:tbi
   script:
     """
-        mkdir pythonegg && export PYTHON_EGG_CACHE=$PWD/pythonegg
+        mkdir pythonegg && export PYTHON_EGG_CACHE=\$PWD/pythonegg
 
         if [[ ${task.cpus} -eq 1 ]]
         then
