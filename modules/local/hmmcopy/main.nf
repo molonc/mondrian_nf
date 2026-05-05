@@ -21,6 +21,8 @@ process HMMCOPY {
     val(map_cutoff)
   )
   path add_contam
+  path add_techd
+  path htert_rt
 
   output:
   tuple(
@@ -72,5 +74,12 @@ process HMMCOPY {
       --metrics-csv  "${cell_id}_metrics.csv.gz" \
       --metrics-yaml "${cell_id}_metrics.csv.gz.yaml" \
       --org-threshold 0.60
+
+    # ---- add techd metrics ----
+    python "${add_techd}" \
+      --reads-csv "${cell_id}_reads.csv.gz" \
+      --metrics-csv  "${cell_id}_metrics.csv.gz" \
+      --metrics-yaml "${cell_id}_metrics.csv.gz.yaml" \
+      --htert-rt "${htert_rt}"
   """
 }

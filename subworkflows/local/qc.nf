@@ -108,8 +108,10 @@ workflow MONDRIAN_QC{
     }
 
     ch_add_contam = Channel.value( file("${projectDir}/script/add_contamination_status.py") )
+    ch_add_techd  = Channel.value( file("${projectDir}/script/add_techd_qc_metrics.py") )
+    ch_htert_rt   = Channel.value( file("${projectDir}/script/htert_rt.csv") )
 
-    HMMCOPY(hmm_input, ch_add_contam)
+    HMMCOPY(hmm_input, ch_add_contam, ch_add_techd, ch_htert_rt)
 
     HMMTAR(HMMCOPY.out.collect{it[9]}, sample_id+'_hmmcopy_data')
 
