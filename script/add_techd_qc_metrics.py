@@ -22,21 +22,21 @@ NEW_YAML_COLUMNS: List[Dict[str, str]] = [
     {"dtype": "float", "name": "reads_meanlog"},
     {"dtype": "float", "name": "reads_sdlog"},
     {"dtype": "float", "name": "reads_gc_cor"},
-    {"dtype": "float", "name": "corrected_mean"},
-    {"dtype": "float", "name": "corrected_sd"},
-    {"dtype": "float", "name": "corrected_bottom"},
-    {"dtype": "float", "name": "corrected_diploid_perc"},
+    {"dtype": "float", "name": "corrected_mean"}, # likely important
+    {"dtype": "float", "name": "corrected_sd"}, # likely important
+    {"dtype": "float", "name": "corrected_bottom"}, # important
+    {"dtype": "float", "name": "corrected_diploid_perc"}, # important
     {"dtype": "float", "name": "rt_early"},
     {"dtype": "float", "name": "rt_mid"},
     {"dtype": "float", "name": "rt_late"},
     {"dtype": "float", "name": "rt_el"},
     {"dtype": "float", "name": "rt_em"},
     {"dtype": "float", "name": "rt_ml"},
-    {"dtype": "float", "name": "chr_sd"},
-    {"dtype": "bool",  "name": "rt_em_split"},
-    {"dtype": "bool",  "name": "rt_ml_split"},
+    {"dtype": "float", "name": "chr_sd"}, # important
+    {"dtype": "float", "name": "rt_em_split"},
+    {"dtype": "float", "name": "rt_ml_split"},
     {"dtype": "int",   "name": "rt_phase_code"},
-    {"dtype": "str",   "name": "rt_phase_name"},
+    {"dtype": "str",   "name": "rt_phase_name"}, # important
 ]
 
 
