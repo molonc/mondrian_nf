@@ -35,7 +35,7 @@ NEW_YAML_COLUMNS: List[Dict[str, str]] = [
     {"dtype": "float", "name": "chr_sd"}, # important
     {"dtype": "float", "name": "rt_em_split"},
     {"dtype": "float", "name": "rt_ml_split"},
-    {"dtype": "int",   "name": "rt_phase_code"},
+    {"dtype": "float", "name": "rt_phase_code"},
     {"dtype": "str",   "name": "rt_phase_name"}, # important
 ]
 
