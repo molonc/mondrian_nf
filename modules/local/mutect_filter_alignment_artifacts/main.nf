@@ -17,7 +17,7 @@ process FILTERALIGNMENTARTIFACTS {
   output:
     path("${filename}.vcf.gz"), emit: vcf
     path("${filename}.vcf.gz.tbi"), emit: tbi
-    path("${filename}.vcf.gz.tbi"), emit: csi
+    path("${filename}.vcf.gz.csi"), emit: csi
   script:
     """
         set -e

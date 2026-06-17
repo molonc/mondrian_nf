@@ -154,8 +154,8 @@ workflow MONDRIAN_VARIANT {
             chromosomes, sample_id+'_consensus'
         )
 
-        vcf2maf = VCF2MAF(consensus.vcf, tumor, normal, vep_ref, vep_fasta_suffix, ncbi_build, cache_version, species, sample_id+'_consensus')
-        updated_maf = UPDATEMAFCOUNTS(vcf2maf.maf, consensus.counts, sample_id+'_consensus')
+        vcf2maf = VCF2MAF(consensus.vcf, tumor, normal, vep_ref, vep_fasta_suffix, ncbi_build, cache_version, species, sample_id+'_vcf2maf')
+        updated_maf = UPDATEMAFCOUNTS(vcf2maf.maf, consensus.counts, sample_id+'_updated_counts')
 
 
         VARIANTMETADATA(
