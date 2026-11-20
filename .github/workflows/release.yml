@@ -1,0 +1,91 @@
+# Tags a release and publishes it.
+#
+# Merging a PR that changes `manifest.version` in nextflow.config is the
+# approval. The tag job refuses a version whose tag already exists upstream in
+# mondrian-scwgs/mondrian_nf, then tags the merge commit. The publish job
+# creates the GitHub Release from the matching CHANGELOG.md section. See
+# MOLONC.md.
+#
+# Tags are descriptive: iris runs whichever tag its `pipeline_source` Variable
+# names, so neither job deploys anything.
+#
+# GitHub does not start a workflow for a tag that GITHUB_TOKEN pushes, so the
+# tag job hands the tag to the publish job directly.
+name: release
+
+on:
+  push:
+    branches: [main]
+    # A version bump is a nextflow.config change; a push that leaves the file
+    # alone has nothing to tag.
+    paths: [nextflow.config]
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # A nextflow.config change that leaves the version alone reaches this
+      # step too, so an existing tag is an ordinary case rather than a failure.
+      # iris labels cell metrics with the tag alone, so a tag that upstream
+      # also uses would be ambiguous in Atlas.
+      - name: Tag the version the manifest declares
+        id: tag
+        run: |
+          version="$(sed -n "s/^ *version *= *'\(.*\)'/\1/p" nextflow.config)"
+          tag="v${version}"
+          if [[ ! "${tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::manifest.version ${version} is not X.Y.Z"
+            exit 1
+          fi
+          if git rev-parse -q --verify "refs/tags/${tag}" > /dev/null; then
+            echo "${tag} already exists; this push released nothing"
+            exit 0
+          fi
+          if [ -n "$(git ls-remote --tags https://github.com/mondrian-scwgs/mondrian_nf.git "refs/tags/${tag}")" ]; then
+            echo "::error::${tag} exists upstream in mondrian-scwgs/mondrian_nf"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "${tag}" -m "${tag}"
+          git push origin "${tag}"
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+
+  publish:
+    needs: tag
+    if: needs.tag.outputs.tag != ''
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ needs.tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.tag.outputs.tag }}
+
+      # Written to a file so that backticks, quotes and $ in the changelog
+      # reach gh verbatim.
+      - name: Extract the changelog section
+        run: |
+          awk -v heading="### ${TAG}" '
+            $0 == heading { found = 1; next }
+            found && /^### / { exit }
+            found { print }
+          ' CHANGELOG.md > release-notes.md
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "::error::CHANGELOG.md has no entries under ### ${TAG}"
+            exit 1
+          fi
+
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${TAG}" --title "${TAG}" --notes-file release-notes.md
